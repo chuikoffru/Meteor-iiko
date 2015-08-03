@@ -2,13 +2,17 @@ Package.describe({
   name: 'chuikoff:iiko',
   version: '0.0.1',
   summary: 'API IIKO integration',
-  git: '',
+  git: 'https://github.com/chuikoffru/Meteor-iiko',
   documentation: 'README.md'
 });
 
 Package.onUse(function(api) {
   api.versionsFrom('1.1.0.2');
-  api.addFiles('iiko.js');
+  api.use(['http', 'mongo'], ['server', 'client']);
+  api.addFiles(['server/iiko.js'],['server']);
+  //api.addFiles(['client/iiko.js'],['client']);
+  api.addFiles(['models/groups.js', 'models/products.js', 'models/settings.js'], 'server');
+  api.export('IIKO', ['server']);
 });
 
 Package.onTest(function(api) {
