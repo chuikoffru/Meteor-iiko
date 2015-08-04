@@ -9,10 +9,10 @@ Package.describe({
 Package.onUse(function(api) {
   api.versionsFrom('1.1.0.2');
   api.use(['http', 'mongo'], ['server', 'client']);
-  api.addFiles(['server/iiko.js'],['server']);
-  //api.addFiles(['client/iiko.js'],['client']);
-  api.addFiles(['models/groups.js', 'models/products.js', 'models/settings.js'], 'server');
-  api.export('IIKO', ['server']);
+  api.addFiles(['models/settings.js', 'server/iiko.js', 'server/startup.js', 'server/publications.js'], 'server');
+  api.addFiles(['models/groups.js', 'models/products.js'],['server', 'client']);
+  api.export('IIKO', 'server');
+  api.export(['Products', 'Groups'], 'client');
 });
 
 Package.onTest(function(api) {

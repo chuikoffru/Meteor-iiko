@@ -86,7 +86,9 @@ IIKO = {
     } else {
       if(result.data)
         result.data.groups.forEach(function(group){
+          group.subCategories = _.where(result.data.groups, {parentGroup : group.id});
           Groups.upsert({id : group.id}, group);
+          Groups.remove({parentGroup : {$ne : null}});
         });
 
         result.data.products.forEach(function(product){
@@ -117,6 +119,6 @@ IIKO = {
 
 Meteor.methods({
   syncNomenclature : function(){
-     IIKO.getNomenclature();
+     return IIKO.getNomenclature();
   }
 });
