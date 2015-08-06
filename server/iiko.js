@@ -3,6 +3,7 @@
   email : chuikoff.ru@gmail.com
   Meta : Server side function
 */
+
 var config = {
   lifetime : 600000, //10 минут
   host : 'https://iiko.biz:9900/api/0/',
@@ -88,7 +89,6 @@ IIKO = {
         result.data.groups.forEach(function(group){
           group.subCategories = _.where(result.data.groups, {parentGroup : group.id});
           Groups.upsert({id : group.id}, group);
-          Groups.remove({parentGroup : {$ne : null}});
         });
 
         result.data.products.forEach(function(product){

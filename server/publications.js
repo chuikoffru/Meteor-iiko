@@ -1,7 +1,7 @@
 
-Meteor.publish("settings", function(url){
+/*Meteor.publish("settings", function(url){
   return Settings.findOne('settings');
-});
+});*/
 
 Meteor.publish("groups", function(){
   return Groups.find();
