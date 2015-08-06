@@ -43,6 +43,18 @@ angular.module('chuikoffRu').controller('ProductsController', ['$scope', '$meteo
   angular.module('chuikoffRu').controller('MenuController', ['$scope', '$meteor', function($scope, $meteor){
     $scope.categories = $meteor.collection(Groups, false).subscribe("groups");
   }]);
+
+  angular.module('chuikoffRu').controller('HomeController', ['$scope', '$meteor', function($scope, $meteor){
+    $scope.sync = function(){
+      $meteor.call('syncNomenclature').then(function(data){
+        console.log(data);
+      }, function(error){
+        console.log(error);
+      });
+    };
+  }]);
+
 </pre>
 
+Так же синхронизацию номенклатуры можно вызвать и на клиенте, пример показан в HomeController.
 В ProductsController получаем одну категорию и товары к ней, а в MenuController получаем все категории.
