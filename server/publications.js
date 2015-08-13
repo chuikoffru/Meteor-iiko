@@ -7,6 +7,10 @@ Meteor.publish("groups", function(){
   return Groups.find();
 });
 
+Meteor.publish("carts", function(userId){
+  return Carts.find({userId : userId});
+});
+
 Meteor.publish("getProductsByCategoryId", function(id){
   return Products.find({parentGroup : id});
 });
