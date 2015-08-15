@@ -12,6 +12,7 @@ Package.onUse(function(api) {
   api.use('chuikoff:image-saver', 'server');
   api.addFiles(['models/settings.js', 'server/iiko.js', 'server/startup.js', 'server/publications.js'], 'server');
   api.addFiles(['models/groups.js', 'models/products.js', 'models/carts.js'],['server', 'client']);
+  //api.addFiles('client/iiko.js', 'client');
   api.export('IIKO', 'server');
   api.export(['Products', 'Groups', 'Carts'], 'client');
 });

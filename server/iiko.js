@@ -13,7 +13,9 @@ var uri = {
   auth : 'auth/access_token',
   organization : 'organization/list',
   terminal : 'deliverySettings/getDeliveryTerminals',
-  nomenclature : 'nomenclature/'
+  nomenclature : 'nomenclature/',
+  marketing : 'rmsSettings/getMarketingSources',
+  payments : 'rmsSettings/getPaymentTypes'
 }
 
 IIKO = {
@@ -51,6 +53,42 @@ IIKO = {
     if(!Settings.findOne('settings').terminals) {
       this.getTerminals();
     }
+    //Проверяем в базе маркетинговые источники
+    if(!Settings.findOne('settings').marketing) {
+      this.getMarketingSources();
+    }
+    //Проверяем в базе способы оплаты
+    if(!Settings.findOne('settings').payments) {
+      this.getPaymentTypes();
+    }
+  },
+  getMarketingSources : function() {
+    info = Settings.findOne('settings');
+    var result = HTTP.get(config.host + uri.marketing, {
+          params: {
+            access_token: info.token,
+            organization : info.companies[0].id
+          }
+    });
+    if (result.error) {
+        throw result.error;
+    } else {
+      Settings.update('settings', { $set: {marketingSources : result.data.marketingSources}});
+    }
+  },
+  getPaymentTypes : function() {
+    info = Settings.findOne('settings');
+    var result = HTTP.get(config.host + uri.payments, {
+          params: {
+            access_token: info.token,
+            organization : info.companies[0].id
+          }
+    });
+    if (result.error) {
+        throw result.error;
+    } else {
+      Settings.update('settings', { $set: {paymentTypes : result.data.paymentTypes}});
+    }
   },
   getOrganizationList: function() {
       token = Settings.findOne('settings').token;
@@ -76,7 +114,7 @@ IIKO = {
     if (result.error) {
         throw result.error;
     } else {
-      Settings.update('settings', { $set: {terminals : result.data}});
+      Settings.update('settings', { $set: {deliveryTerminals : result.data.deliveryTerminals}});
     }
   },
   getNomenclatureProducts : function(){
