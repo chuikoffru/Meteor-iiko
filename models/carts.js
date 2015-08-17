@@ -23,15 +23,15 @@ Meteor.methods({
         //Уже есть такой товар в корзине
         Carts.update({'cartId' : cartId, 'items.id' : item.id}, {
           $inc : {
-            'items.$.quantity' : +1,
-            'items.$.totalPrice' : + item.price,
+            'items.$.amount' : +1,
+            'items.$.sum' : + item.price,
             total : + item.price
             }
         });
       } else {
         //Нет товара в корзине
-        item.quantity = 1;
-        item.totalPrice = item.price;
+        item.amount = 1;
+        item.sum = item.price;
         Carts.update({'cartId' : cartId}, {
           $push : {
             items : item
@@ -47,20 +47,21 @@ Meteor.methods({
         items : [],
         total : item.price
       }
-      item.quantity = 1;
-      item.totalPrice = item.price;
+      item.amount = 1;
+      item.sum = item.price;
       data.items.push(item);
       Carts.insert(data);
     }
     return true;
   },
   removeItem : function(cartId, item) {
-    var ups = Carts.findOne({'cartId' : cartId, 'items.id' : item.id, 'items.quantity' : {$gt : 1}});
+    var ups = Carts.findOne({'cartId' : cartId, 'items.id' : item.id, 'items.amount' : {$gt : 1}});
     if(ups) {
       //Если есть этот товар в количестве больше 1 шт, то просто убираем одну шт.
       Carts.update({'cartId' : cartId, 'items.id' : item.id}, {
         $inc : {
-          "items.$.quantity" : -1,
+          "items.$.amount" : -1,
+          "items.$.sum" : - item.price,
           total : - item.price
         }
       });

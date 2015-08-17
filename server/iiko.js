@@ -15,7 +15,8 @@ var uri = {
   terminal : 'deliverySettings/getDeliveryTerminals',
   nomenclature : 'nomenclature/',
   marketing : 'rmsSettings/getMarketingSources',
-  payments : 'rmsSettings/getPaymentTypes'
+  payments : 'rmsSettings/getPaymentTypes',
+  add : 'orders/add'
 }
 
 IIKO = {
@@ -38,6 +39,22 @@ IIKO = {
   },
   getMaxLifeTime : function () {
     return this.getTokenTimeActive > new Date().getTime();
+  },
+  addOrder : function(orderId){
+    var order = Orders.findOne(orderId);
+    var info = Settings.findOne('settings');
+    var result = HTTP.post(config.host + uri.add, {
+          params: {
+            access_token: info.token
+          },
+          data : order
+    });
+    if (result.error) {
+        throw result.error;
+    } else {
+      console.log(result);
+    }
+    return result;
   },
   setToken : function(token) {
     //Записываем новый токен
