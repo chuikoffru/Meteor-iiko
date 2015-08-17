@@ -1,12 +1,21 @@
-
-/*Meteor.publish("settings", function(url){
-  return Settings.findOne('settings');
-});*/
-
 Meteor.publish("groups", function(){
   return Groups.find({}, {fields : {
     isDeleted : 0, tags : 0, additionalInfo : 0
   }});
+});
+
+Meteor.publish("marketing", function(argument){
+  return Marketing.find({}, {fields : {
+    id : 1, name : 1
+  }});
+});
+
+Meteor.publish("payments", function(argument){
+  return Payments.find();
+});
+
+Meteor.publish("terminals", function(argument){
+  return Terminals.find();
 });
 
 Meteor.publish("carts", function(cartId){

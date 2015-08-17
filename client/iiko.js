@@ -1,7 +1,0 @@
-
-IIKO = {
-  getCarts : function(cartId) {
-    
-  }
-
-};

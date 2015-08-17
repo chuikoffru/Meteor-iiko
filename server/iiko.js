@@ -50,15 +50,15 @@ IIKO = {
       this.getOrganizationList();
     }
     //Проверяем есть ли в базе терминалы, если нет, получаем и добавляем.
-    if(!Settings.findOne('settings').terminals) {
+    if(Terminals.find().count() == 0) {
       this.getTerminals();
     }
     //Проверяем в базе маркетинговые источники
-    if(!Settings.findOne('settings').marketing) {
+    if(Marketing.find().count() == 0) {
       this.getMarketingSources();
     }
     //Проверяем в базе способы оплаты
-    if(!Settings.findOne('settings').payments) {
+    if(Payments.find().count() == 0) {
       this.getPaymentTypes();
     }
   },
@@ -73,7 +73,9 @@ IIKO = {
     if (result.error) {
         throw result.error;
     } else {
-      Settings.update('settings', { $set: {marketingSources : result.data.marketingSources}});
+      _.each(result.data.marketingSources, function(item){
+        Marketing.insert(item);
+      });
     }
   },
   getPaymentTypes : function() {
@@ -87,7 +89,9 @@ IIKO = {
     if (result.error) {
         throw result.error;
     } else {
-      Settings.update('settings', { $set: {paymentTypes : result.data.paymentTypes}});
+      _.each(result.data.paymentTypes, function(item){
+        Payments.insert(item);
+      });
     }
   },
   getOrganizationList: function() {
@@ -114,7 +118,9 @@ IIKO = {
     if (result.error) {
         throw result.error;
     } else {
-      Settings.update('settings', { $set: {deliveryTerminals : result.data.deliveryTerminals}});
+      _.each(result.data.deliveryTerminals, function(item){
+        Terminals.insert(item);
+      });
     }
   },
   getNomenclatureProducts : function(){
@@ -228,6 +234,15 @@ Meteor.methods({
   },
   syncProducts : function(){
     return IIKO.getNomenclatureProducts();
+  },
+  syncMarketings : function(){
+    return IIKO.getMarketingSources();
+  },
+  syncPayments : function(){
+    return IIKO.getPaymentTypes();
+  },
+  syncTerminals : function(){
+    return IIKO.getTerminals();
   },
   testImage : function(){
     return IIKO.testImage();

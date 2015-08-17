@@ -3,6 +3,7 @@ if(Settings.find().count() == 0) {
   Settings.insert({
     _id : 'settings',
     lifetime : new Date().getTime() - 600000,
-    token : ""
+    token : "",
+    companies : []
   });
 }
